@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viper | Web3 / Golang / Java 后端工程师</title>
+    <meta
+      name="description"
+      content="Web3、Golang、Java 后端工程师个人简历与作品展示。专注高并发服务、链上系统与工程化交付。"
+    />
+    <style>
+      :root {
+        --bg: #f4f5f6;
+        --surface: #ffffff;
+        --line: #d9dde2;
+        --text: #1f2933;
+        --muted: #5f6b78;
+        --accent: #1f3a4d;
+        --accent-soft: #e8eef2;
+        --radius: 16px;
+        --shadow: 0 10px 28px rgba(12, 22, 31, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Noto Sans SC",
+          "PingFang SC",
+          "Microsoft YaHei",
+          "Segoe UI",
+          sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 8% 14%, rgba(31, 58, 77, 0.08), transparent 35%),
+          radial-gradient(circle at 85% 72%, rgba(31, 58, 77, 0.05), transparent 30%),
+          var(--bg);
+        line-height: 1.65;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      #bg-particles {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1120px, 92vw);
+        margin: 0 auto;
+      }
+
+      .nav-wrap {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(8px);
+        background: rgba(244, 245, 246, 0.88);
+        border-bottom: 1px solid rgba(217, 221, 226, 0.8);
+      }
+
+      nav {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background:
+          radial-gradient(circle at 35% 30%, #416279, #1f3a4d 58%, #162b38),
+          linear-gradient(145deg, #2b4d63, #183141);
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+        font-weight: 800;
+        color: #f6fbff;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--accent);
+      }
+
+      section {
+        padding: 84px 0;
+      }
+
+      .hero {
+        padding-top: 92px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+
+      h1 {
+        margin: 16px 0 14px;
+        font-size: clamp(34px, 4.8vw, 56px);
+        line-height: 1.15;
+        letter-spacing: 0.01em;
+      }
+
+      .lead {
+        max-width: 62ch;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .chip-row {
+        margin-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip {
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        font-size: 13px;
+        font-weight: 600;
+        color: #324252;
+        background: #f7f9fa;
+      }
+
+      .hero-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: calc(var(--radius) + 2px);
+        box-shadow: var(--shadow);
+        padding: 26px;
+      }
+
+      .hero-card h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+      }
+
+      .hero-card p {
+        margin: 0 0 14px;
+        color: var(--muted);
+      }
+
+      .hero-card ul {
+        margin: 0;
+        padding-left: 18px;
+        color: #3a4754;
+      }
+
+      .section-title {
+        margin: 0;
+        text-align: center;
+        font-size: clamp(30px, 4vw, 44px);
+        line-height: 1.2;
+      }
+
+      .section-sub {
+        margin: 14px auto 0;
+        max-width: 54ch;
+        text-align: center;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .about-grid {
+        margin-top: 48px;
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 30px;
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 28px;
+      }
+
+      .about-cover {
+        min-height: 320px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        overflow: hidden;
+      }
+
+      .about-cover img {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .about-text h3 {
+        margin: 0 0 12px;
+        font-size: 30px;
+      }
+
+      .about-text p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .stats {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fafbfc;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 20px;
+        color: var(--accent);
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .skills-grid,
+      .works-grid {
+        margin-top: 52px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .skill-card h3 {
+        margin: 0 0 14px;
+        font-size: 28px;
+      }
+
+      .work-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .work-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+      }
+
+      .work-cover {
+        aspect-ratio: 16 / 9;
+        border-bottom: 1px solid var(--line);
+        overflow: hidden;
+      }
+
+      .work-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .work-body {
+        padding: 20px 20px 18px;
+      }
+
+      .work-body h3 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+
+      .work-body p {
+        margin: 10px 0 16px;
+        color: var(--muted);
+      }
+
+      .work-link {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .exp-list {
+        margin-top: 50px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .exp-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 24px;
+      }
+
+      .exp-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+
+      .exp-head h3 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .exp-time {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .exp-company {
+        margin: 4px 0 8px;
+        color: #344353;
+        font-weight: 600;
+      }
+
+      .exp-summary {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .exp-points {
+        margin: 12px 0 0;
+        padding-left: 20px;
+        color: #3a4754;
+      }
+
+      .contact-wrap {
+        margin-top: 48px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 22px;
+      }
+
+      .contact-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .contact-item {
+        padding: 13px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fafbfc;
+      }
+
+      .socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .socials a {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        color: var(--accent);
+        background: #f9fbfc;
+      }
+
+      .socials a:hover {
+        background: var(--accent-soft);
+      }
+
+      footer {
+        padding: 28px 0 36px;
+        text-align: center;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+      }
+
+      .back-to-top {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        width: 56px;
+        height: 56px;
+        border: 1px solid #c7d4df;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #ffffff, #e9eff4);
+        color: var(--accent);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        box-shadow: 0 14px 28px rgba(12, 22, 31, 0.18);
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+        z-index: 25;
+      }
+
+      .back-to-top:hover {
+        background: var(--accent-soft);
+      }
+
+      .back-to-top.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        animation: rise 0.55s ease forwards;
+      }
+
+      .delay-1 {
+        animation-delay: 0.05s;
+      }
+
+      .delay-2 {
+        animation-delay: 0.1s;
+      }
+
+      .delay-3 {
+        animation-delay: 0.15s;
+      }
+
+      @keyframes rise {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .about-grid,
+        .skills-grid,
+        .works-grid,
+        .contact-wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding-top: 72px;
+        }
+
+        .stats {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 760px) {
+        nav {
+          min-height: 68px;
+          flex-direction: column;
+          justify-content: center;
+          padding: 10px 0;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: space-between;
+          gap: 10px;
+          font-size: 14px;
+        }
+
+        section {
+          padding: 68px 0;
+        }
+
+        .lead,
+        .section-sub {
+          font-size: 16px;
+        }
+
+        .about-text h3 {
+          font-size: 26px;
+        }
+
+        .work-body h3,
+        .exp-head h3 {
+          font-size: 22px;
+        }
+
+        .stats {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #bg-particles {
+          display: none;
+        }
+
+        .reveal {
+          opacity: 1;
+          transform: none;
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg-particles" aria-hidden="true"></canvas>
+
+    <header class="nav-wrap">
+      <div class="container">
+        <nav>
+          <a class="brand" href="#top">
+            <span class="avatar">V</span>
+            <span>Viper</span>
+          </a>
+          <div class="nav-links">
+            <a href="#about">关于我</a>
+            <a href="#skills">技能</a>
+            <a href="#works">作品集</a>
+            <a href="#experience">经历</a>
+            <a href="#contact">联系</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow reveal">WEB3 / GOLANG / JAVA BACKEND</span>
+            <h1 class="reveal delay-1">构建稳定、高并发、可验证的后端系统</h1>
+            <p class="lead reveal delay-2">
+              8年+ 后端工作经验，聚焦链上数据服务、交易系统和企业级微服务架构。擅长将 Web3 场景与传统后端工程规范融合，兼顾交付效率与系统可靠性。
+            </p>
+            <div class="chip-row reveal delay-3">
+              <span class="chip">Solidity</span>
+              <span class="chip">Golang</span>
+              <span class="chip">Java / Spring Boot</span>
+              <span class="chip">Kafka</span>
+              <span class="chip">PostgreSQL</span>
+              <span class="chip">Redis</span>
+            </div>
+          </div>
+          <aside class="hero-card reveal delay-2">
+            <h3>当前关注方向</h3>
+            <p>在工程化稳定性基础上提升链上业务吞吐、可观测性与安全性。</p>
+            <ul>
+              <li>交易撮合与结算服务优化</li>
+              <li>链上事件索引与数据聚合</li>
+              <li>分布式任务与异步消息治理</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <h2 class="section-title">关于我</h2>
+          <p class="section-sub">
+            我是后端工程师，习惯从系统边界、吞吐瓶颈与故障恢复角度设计服务，重视代码质量、可维护性与团队协作效率。
+          </p>
+          <div class="about-grid">
+            <div class="panel">
+              <div class="about-cover">
+                <img src="./assets/about-web3-backend.svg" alt="资深 Web3 后端工程师架构视觉图" />
+              </div>
+            </div>
+            <div class="panel about-text">
+              <h3>工程化思维 + 业务落地</h3>
+              <p>
+                在 Web3 和传统互联网项目中，我负责过核心交易链路、钱包服务、风控中台与微服务治理。日常工作覆盖架构设计、性能优化、线上排障与研发流程建设。
+              </p>
+              <div class="stats">
+                <div class="stat">
+                  <strong>8年+</strong>
+                  <span>后端工作经验</span>
+                </div>
+                <div class="stat">
+                  <strong>20w+</strong>
+                  <span>峰值 QPS 场景</span>
+                </div>
+                <div class="stat">
+                  <strong>99.95%</strong>
+                  <span>服务可用性</span>
+                </div>
+              </div>
+              <div class="chip-row" style="margin-top: 20px">
+                <span class="chip">微服务架构</span>
+                <span class="chip">链上数据索引</span>
+                <span class="chip">高并发优化</span>
+                <span class="chip">系统安全</span>
+                <span class="chip">CI/CD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills">
+        <div class="container">
+          <h2 class="section-title">核心技能</h2>
+          <p class="section-sub">面向高可用后端系统的核心技术栈与工程能力。</p>
+          <div class="skills-grid">
+            <article class="panel skill-card">
+              <h3>Web3</h3>
+              <div class="chip-row">
+                <span class="chip">EVM</span>
+                <span class="chip">Solidity</span>
+                <span class="chip">The Graph</span>
+                <span class="chip">Wallet API</span>
+                <span class="chip">链上风控</span>
+              </div>
+            </article>
+            <article class="panel skill-card">
+              <h3>Golang</h3>
+              <div class="chip-row">
+                <span class="chip">Gin / Fiber</span>
+                <span class="chip">gRPC</span>
+                <span class="chip">Kafka</span>
+                <span class="chip">Redis</span>
+                <span class="chip">性能调优</span>
+              </div>
+            </article>
+            <article class="panel skill-card">
+              <h3>Java</h3>
+              <div class="chip-row">
+                <span class="chip">Spring Boot</span>
+                <span class="chip">MyBatis</span>
+                <span class="chip">MQ</span>
+                <span class="chip">分布式事务</span>
+                <span class="chip">监控告警</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="works">
+        <div class="container">
+          <h2 class="section-title">作品集</h2>
+          <p class="section-sub">精选 3 个代表性项目，覆盖 Web3 基础设施与企业级后端服务。</p>
+          <div class="works-grid">
+            <article class="work-card">
+              <div class="work-cover">
+                <img src="./assets/work-chain-index.svg" alt="链上事件索引平台架构图" />
+              </div>
+              <div class="work-body">
+                <h3>链上事件索引平台</h3>
+                <p>使用 Golang + Kafka + ClickHouse 构建多链事件索引，支持高吞吐写入、秒级查询与告警。</p>
+                <div class="chip-row">
+                  <span class="chip">Golang</span>
+                  <span class="chip">Kafka</span>
+                  <span class="chip">ClickHouse</span>
+                </div>
+                <p><a class="work-link" href="#" aria-label="查看项目详情">查看详情</a></p>
+              </div>
+            </article>
+            <article class="work-card">
+              <div class="work-cover">
+                <img src="./assets/work-trading.svg" alt="交易撮合与清算服务系统图" />
+              </div>
+              <div class="work-body">
+                <h3>交易撮合与清算服务</h3>
+                <p>基于 Java/Spring Boot 设计撮合与清算链路，完善幂等、重试和审计流程，提升交易稳定性。</p>
+                <div class="chip-row">
+                  <span class="chip">Java</span>
+                  <span class="chip">Spring Boot</span>
+                  <span class="chip">Redis</span>
+                </div>
+                <p><a class="work-link" href="#" aria-label="查看项目详情">查看详情</a></p>
+              </div>
+            </article>
+            <article class="work-card">
+              <div class="work-cover">
+                <img src="./assets/work-governance.svg" alt="企业微服务治理平台架构图" />
+              </div>
+              <div class="work-body">
+                <h3>企业微服务治理平台</h3>
+                <p>统一配置、日志与追踪体系，打通链路监控和故障定位，支撑团队多项目并行开发与发布。</p>
+                <div class="chip-row">
+                  <span class="chip">Kubernetes</span>
+                  <span class="chip">Prometheus</span>
+                  <span class="chip">Jaeger</span>
+                </div>
+                <p><a class="work-link" href="#" aria-label="查看项目详情">查看详情</a></p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <div class="container">
+          <h2 class="section-title">工作经历</h2>
+          <p class="section-sub">聚焦后端架构、交易系统和链上数据服务的核心履历。</p>
+          <div class="exp-list">
+            <article class="exp-card">
+              <div class="exp-head">
+                <h3>高级后端工程师</h3>
+                <span class="exp-time">2023 - 至今</span>
+              </div>
+              <p class="exp-company">某 Web3 基础设施公司</p>
+              <p class="exp-summary">负责链上数据平台与交易后台核心模块，推进服务拆分、异步化改造与监控体系建设。</p>
+              <ul class="exp-points">
+                <li>主导多链事件索引服务重构，索引延迟从分钟级降至秒级。</li>
+                <li>设计 Kafka + Redis 流水线，峰值吞吐提升 2.3 倍。</li>
+                <li>建设可观测性标准，故障定位平均耗时下降约 45%。</li>
+              </ul>
+            </article>
+
+            <article class="exp-card">
+              <div class="exp-head">
+                <h3>后端工程师（Golang / Java）</h3>
+                <span class="exp-time">2021 - 2023</span>
+              </div>
+              <p class="exp-company">某金融科技公司</p>
+              <p class="exp-summary">参与交易中台和账户服务研发，负责高并发链路稳定性与资损防护机制落地。</p>
+              <ul class="exp-points">
+                <li>优化撮合与清算链路幂等控制，降低交易异常率。</li>
+                <li>建设风控规则引擎与审计日志体系，满足合规审查需求。</li>
+                <li>推动 CI/CD 标准化，提升发布效率并降低回滚次数。</li>
+              </ul>
+            </article>
+
+            <article class="exp-card">
+              <div class="exp-head">
+                <h3>后端开发工程师</h3>
+                <span class="exp-time">2019 - 2021</span>
+              </div>
+              <p class="exp-company">某互联网技术团队</p>
+              <p class="exp-summary">负责业务 API、数据服务与运维协同，支撑多业务线快速迭代交付。</p>
+              <ul class="exp-points">
+                <li>开发核心业务 API 与后台任务，提升系统可维护性。</li>
+                <li>完成 MySQL 查询与缓存策略优化，显著降低接口耗时。</li>
+                <li>参与故障演练和应急预案完善，提高线上稳定性。</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <h2 class="section-title">联系方式</h2>
+          <p class="section-sub">欢迎交流后端架构、Web3 技术与项目合作。</p>
+          <div class="contact-wrap">
+            <div class="panel">
+              <h3>直接联系</h3>
+              <div class="contact-list">
+                <div class="contact-item">邮箱：linchuan.dev@example.com</div>
+                <div class="contact-item">微信：linchuan_backend</div>
+                <div class="contact-item">地点：上海 / 远程协作</div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>社交媒体</h3>
+              <div class="socials">
+                <a href="#" aria-label="GitHub">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.8-.7 2.2-1.1.1-.7.4-1.1.7-1.4-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 4.8 7c-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.6.2 2.8.1 3.1A4.8 4.8 0 0 1 19 10c0 4.6-2.8 5.6-5.5 6 .4.3.8 1 .8 2.1v3.1c0 .4.2.8.8.6A12 12 0 0 0 12 .5z"></path>
+                  </svg>
+                </a>
+                <a href="#" aria-label="LinkedIn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M4.9 3.5a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8zM3 9.6h3.8V21H3V9.6zm7 0h3.6v1.6h.1c.5-.9 1.7-1.9 3.6-1.9 3.9 0 4.7 2.6 4.7 5.8V21h-3.8v-5.2c0-1.2 0-2.9-1.8-2.9-1.8 0-2.1 1.4-2.1 2.8V21H10V9.6z"></path>
+                  </svg>
+                </a>
+                <a href="#" aria-label="X">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M18.9 2H22l-6.8 7.7L23 22h-6.1l-4.8-6.3L6.5 22H3.4l7.2-8.2L1 2h6.2l4.4 5.9L18.9 2zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20z"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2026 Viper. All rights reserved.</footer>
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部" title="返回顶部">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 14L12 8L18 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M12 9V18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+      </svg>
+    </button>
+
+    <script>
+      const links = document.querySelectorAll('.nav-links a');
+      const sections = [...links].map((item) => document.querySelector(item.getAttribute('href')));
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            links.forEach((link) => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+            });
+          });
+        },
+        { rootMargin: '-35% 0px -55% 0px', threshold: 0.01 }
+      );
+      sections.forEach((sec) => sec && observer.observe(sec));
+
+      const backToTop = document.getElementById('backToTop');
+      function toggleBackToTop() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight;
+        const viewport = window.innerHeight;
+        const nearBottom = scrollTop + viewport >= docHeight - 120;
+        const passedHalf = scrollTop >= docHeight * 0.45;
+        backToTop.classList.toggle('show', nearBottom || passedHalf);
+      }
+      window.addEventListener('scroll', toggleBackToTop, { passive: true });
+      window.addEventListener('resize', toggleBackToTop);
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      toggleBackToTop();
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const canvas = document.getElementById('bg-particles');
+
+      if (canvas && !reducedMotion) {
+        const ctx = canvas.getContext('2d');
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let particles = [];
+        let rafId = null;
+
+        function getParticleCount() {
+          return window.innerWidth < 760 ? 20 : 42;
+        }
+
+        function resizeCanvas() {
+          canvas.width = Math.floor(window.innerWidth * dpr);
+          canvas.height = Math.floor(window.innerHeight * dpr);
+          canvas.style.width = `${window.innerWidth}px`;
+          canvas.style.height = `${window.innerHeight}px`;
+        }
+
+        function buildParticles() {
+          const count = getParticleCount();
+          particles = Array.from({ length: count }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: (Math.random() * 1.8 + 0.7) * dpr,
+            vx: (Math.random() - 0.5) * 0.14 * dpr,
+            vy: (Math.random() - 0.5) * 0.14 * dpr,
+            a: Math.random() * 0.32 + 0.12
+          }));
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          for (const p of particles) {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
+            if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(31, 58, 77, ${p.a})`;
+            ctx.shadowBlur = 7 * dpr;
+            ctx.shadowColor = 'rgba(31, 58, 77, 0.2)';
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          rafId = requestAnimationFrame(draw);
+        }
+
+        resizeCanvas();
+        buildParticles();
+        draw();
+
+        window.addEventListener('resize', () => {
+          if (rafId) cancelAnimationFrame(rafId);
+          resizeCanvas();
+          buildParticles();
+          draw();
+        });
+      }
+    </script>
+  </body>
+</html>

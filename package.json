@@ -1,0 +1,19 @@
+{
+  "name": "resume-code",
+  "version": "1.0.0",
+  "description": "Personal resume single-page site with obfuscated build output",
+  "main": "index.html",
+  "scripts": {
+    "build:obf": "node scripts/build-obfuscated.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "html-minifier-terser": "^7.2.0",
+    "javascript-obfuscator": "^5.3.0",
+    "terser": "^5.46.0"
+  }
+}
