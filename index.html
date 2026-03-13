@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>林川 | Web3 / Golang / Java 后端工程师</title>
+    <title>Viper | Web3 / Golang / Java 后端工程师</title>
     <meta
       name="description"
       content="Web3、Golang、Java 后端工程师个人简历与作品展示。专注高并发服务、链上系统与工程化交付。"
@@ -228,15 +228,17 @@
 
       .about-cover {
         min-height: 320px;
-        background:
-          linear-gradient(135deg, rgba(31, 58, 77, 0.2), rgba(31, 58, 77, 0.02)),
-          repeating-linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.55) 0 14px,
-            rgba(245, 248, 251, 0.95) 14px 28px
-          );
         border-radius: 12px;
         border: 1px solid var(--line);
+        overflow: hidden;
+      }
+
+      .about-cover img {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        object-fit: cover;
+        display: block;
       }
 
       .about-text h3 {
@@ -303,10 +305,14 @@
       .work-cover {
         aspect-ratio: 16 / 9;
         border-bottom: 1px solid var(--line);
-        background:
-          linear-gradient(140deg, rgba(31, 58, 77, 0.14), transparent),
-          radial-gradient(circle at 20% 20%, rgba(31, 58, 77, 0.16), transparent 38%),
-          #ecf0f3;
+        overflow: hidden;
+      }
+
+      .work-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
 
       .work-body {
@@ -526,7 +532,7 @@
         <nav>
           <a class="brand" href="#top">
             <span class="avatar">LC</span>
-            <span>林川</span>
+            <span>Viper</span>
           </a>
           <div class="nav-links">
             <a href="#about">关于我</a>
@@ -577,7 +583,9 @@
           </p>
           <div class="about-grid">
             <div class="panel">
-              <div class="about-cover"></div>
+              <div class="about-cover">
+                <img src="./assets/about-web3-backend.svg" alt="资深 Web3 后端工程师架构视觉图" />
+              </div>
             </div>
             <div class="panel about-text">
               <h3>工程化思维 + 业务落地</h3>
@@ -655,7 +663,9 @@
           <p class="section-sub">精选 3 个代表性项目，覆盖 Web3 基础设施与企业级后端服务。</p>
           <div class="works-grid">
             <article class="work-card">
-              <div class="work-cover"></div>
+              <div class="work-cover">
+                <img src="./assets/work-chain-index.svg" alt="链上事件索引平台架构图" />
+              </div>
               <div class="work-body">
                 <h3>链上事件索引平台</h3>
                 <p>使用 Golang + Kafka + ClickHouse 构建多链事件索引，支持高吞吐写入、秒级查询与告警。</p>
@@ -668,7 +678,9 @@
               </div>
             </article>
             <article class="work-card">
-              <div class="work-cover"></div>
+              <div class="work-cover">
+                <img src="./assets/work-trading.svg" alt="交易撮合与清算服务系统图" />
+              </div>
               <div class="work-body">
                 <h3>交易撮合与清算服务</h3>
                 <p>基于 Java/Spring Boot 设计撮合与清算链路，完善幂等、重试和审计流程，提升交易稳定性。</p>
@@ -681,7 +693,9 @@
               </div>
             </article>
             <article class="work-card">
-              <div class="work-cover"></div>
+              <div class="work-cover">
+                <img src="./assets/work-governance.svg" alt="企业微服务治理平台架构图" />
+              </div>
               <div class="work-body">
                 <h3>企业微服务治理平台</h3>
                 <p>统一配置、日志与追踪体系，打通链路监控和故障定位，支撑团队多项目并行开发与发布。</p>
@@ -785,7 +799,7 @@
       </section>
     </main>
 
-    <footer>© 2026 林川. All rights reserved.</footer>
+    <footer>© 2026 Viper. All rights reserved.</footer>
 
     <script>
       const links = document.querySelectorAll('.nav-links a');
