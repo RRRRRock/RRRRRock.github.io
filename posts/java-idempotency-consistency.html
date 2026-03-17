@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>交易清算链路里的幂等与一致性设计 | Viper Blog</title>
+    <meta name="description" content="Java 交易清算场景下幂等、重试、审计的一致性设计实践。" />
+    <style>
+      :root { --bg:#f3f9ff; --surface:#fff; --line:#cfe0ef; --text:#1b2f42; --muted:#4a6278; --accent:#614fca; }
+      *{box-sizing:border-box;} body{margin:0;font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;color:var(--text);background:var(--bg);line-height:1.78;}
+      .container{width:min(900px,92vw);margin:0 auto;} .nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(243,249,255,.92);border-bottom:1px solid var(--line);backdrop-filter: blur(8px);} .nav .container{min-height:72px;display:flex;align-items:center;justify-content:space-between;}
+      a{color:var(--accent);text-decoration:none;} main{padding-top:100px;padding-bottom:36px;} .article{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 10px 22px rgba(97,79,202,.08);} h1{margin:0 0 8px;font-size:36px;line-height:1.2;} .meta{color:#6a7f94;font-size:14px;margin-bottom:20px;} h2{margin:24px 0 10px;font-size:24px;} p{margin:0 0 12px;} ul{margin:0 0 12px;padding-left:20px;} code{background:#f2efff;border:1px solid #d6cdfb;border-radius:6px;padding:2px 6px;} .back{display:inline-block;margin-top:16px;font-weight:700;}
+    </style>
+  </head>
+  <body>
+    <header class="nav"><div class="container"><strong>Viper Blog</strong><a href="../blog.html">返回博客列表</a></div></header>
+    <main class="container">
+      <article class="article">
+        <h1>交易清算链路里的幂等与一致性设计</h1>
+        <div class="meta">发布于 2026-01-30 · 阅读约 10 分钟</div>
+        <p>交易清算场景天然要求“不能重复扣款、不能漏账、可追溯”。本文给出一套 Java 后端可执行的设计路径。</p>
+        <h2>1. 幂等键设计</h2>
+        <p>业务幂等键建议包含 <code>business_id + account_id + phase</code>，并配唯一索引，确保重复请求只会命中同一记录。</p>
+        <h2>2. 事务与消息</h2>
+        <ul>
+          <li>本地事务写业务表 + Outbox 表。</li>
+          <li>异步投递 MQ，消费端再次做幂等校验。</li>
+          <li>失败重试使用指数退避，避免抖动放大。</li>
+        </ul>
+        <h2>3. 审计与回放</h2>
+        <p>所有关键状态迁移记录操作人、来源系统和 trace_id。遇到争议时可以按 trace 全链路回放，快速定位责任点。</p>
+        <h2>4. 线上治理</h2>
+        <p>发布前做“重复请求压测 + 乱序消息压测 + 人工补单演练”，把风险前置。</p>
+        <a class="back" href="../blog.html">← 返回博客</a>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>多链事件索引服务的高吞吐落地方案 | Viper Blog</title>
+    <meta name="description" content="多链事件索引服务：从抓取、幂等、重放到查询加速的一体化设计。" />
+    <style>
+      :root { --bg:#f3f9ff; --surface:#fff; --line:#cfe0ef; --text:#1b2f42; --muted:#4a6278; --accent:#0c6cae; }
+      * { box-sizing: border-box; }
+      body { margin:0; font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:var(--text); background:var(--bg); line-height:1.78; }
+      .container { width:min(900px,92vw); margin:0 auto; }
+      .nav { position:fixed; top:0; left:0; right:0; z-index:50; background:rgba(243,249,255,.92); border-bottom:1px solid var(--line); backdrop-filter: blur(8px); }
+      .nav .container { min-height:72px; display:flex; align-items:center; justify-content:space-between; }
+      a { color:var(--accent); text-decoration:none; }
+      main { padding-top:100px; padding-bottom:36px; }
+      .crumb { color:#5f7388; font-size:14px; margin-bottom:14px; }
+      .article { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:28px; box-shadow:0 10px 22px rgba(12,108,174,.08); }
+      h1 { margin:0 0 8px; font-size:36px; line-height:1.2; }
+      .meta { color:#6a7f94; font-size:14px; margin-bottom:20px; }
+      h2 { margin:24px 0 10px; font-size:24px; }
+      p { margin:0 0 12px; }
+      ul { margin:0 0 12px; padding-left:20px; }
+      code { background:#edf6ff; border:1px solid #cfe0ef; border-radius:6px; padding:2px 6px; }
+      .back { display:inline-block; margin-top:16px; font-weight:700; }
+    </style>
+  </head>
+  <body>
+    <header class="nav"><div class="container"><strong>Viper Blog</strong><a href="../blog.html">返回博客列表</a></div></header>
+    <main class="container">
+      <article class="article">
+        <div class="crumb">Web3 / Engineering</div>
+        <h1>多链事件索引服务的高吞吐落地方案</h1>
+        <div class="meta">发布于 2026-03-10 · 阅读约 9 分钟</div>
+        <p>在 Web3 业务里，索引层是交易、风控、报表、告警的共同基础。本文给出一套可生产落地的多链事件索引设计，目标是“高吞吐 + 可回放 + 可审计”。</p>
+        <h2>1. 架构拆分</h2>
+        <ul>
+          <li>采集层：按链和合约分组抓取区块日志，保证顺序消费。</li>
+          <li>处理层：标准化事件模型，写入消息总线（Kafka）。</li>
+          <li>存储层：热数据入 ClickHouse，状态缓存入 Redis。</li>
+          <li>服务层：统一 Query API，支持分页、条件过滤与聚合。</li>
+        </ul>
+        <h2>2. 幂等与重放</h2>
+        <p>以 <code>chain_id + tx_hash + log_index</code> 作为幂等键，确保重复数据可覆盖不污染。重放任务按区块范围执行，配合版本号标记，避免旧回放覆盖新数据。</p>
+        <h2>3. 稳定性指标</h2>
+        <ul>
+          <li>索引延迟（Head - Indexed Block）</li>
+          <li>写入失败率与重试次数</li>
+          <li>消费者 Lag 与分区倾斜度</li>
+        </ul>
+        <p>当延迟超过阈值时优先扩消费组，再检查下游写入瓶颈，最后再做链路限流。</p>
+        <h2>4. 实战建议</h2>
+        <p>把“回放”当成一等能力设计，不要把修数当作临时脚本。回放任务纳入发布流程与告警体系，能显著降低线上事故恢复时间。</p>
+        <a class="back" href="../blog.html">← 返回博客</a>
+      </article>
+    </main>
+  </body>
+</html>

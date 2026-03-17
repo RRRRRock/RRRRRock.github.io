@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viper Blog | Web3 / Golang / Java</title>
+    <meta name="description" content="Viper 的技术博客，记录 Web3、Golang、Java 后端工程实践。" />
+    <style>
+      :root {
+        --bg: #f3f9ff;
+        --surface: #ffffff;
+        --line: #cfe0ef;
+        --text: #1b2f42;
+        --muted: #4a6278;
+        --accent: #0c6cae;
+        --accent-soft: #deefff;
+        --radius: 16px;
+        --shadow: 0 10px 22px rgba(12, 108, 174, 0.1);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 10% 12%, rgba(31, 156, 244, 0.16), transparent 38%),
+          radial-gradient(circle at 88% 78%, rgba(14, 165, 143, 0.12), transparent 35%),
+          var(--bg);
+        line-height: 1.7;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .container { width: min(1120px, 92vw); margin: 0 auto; }
+      .nav-wrap {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+        backdrop-filter: blur(8px);
+        background: rgba(243, 249, 255, 0.92);
+        border-bottom: 1px solid rgba(207, 224, 239, 0.9);
+      }
+      nav { min-height: 76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+      .brand { display:flex; align-items:center; gap:12px; font-size:18px; font-weight:700; }
+      .avatar {
+        width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#28a4f3,#1277bf);
+        display:grid; place-items:center; color:#fff; font-weight:800; box-shadow:0 6px 18px rgba(18,119,191,.24);
+      }
+      .nav-links { display:flex; align-items:center; gap:24px; font-size:15px; font-weight:600; }
+      .nav-links a { text-decoration:none; color:#48637a; padding-bottom:4px; border-bottom:2px solid transparent; }
+      .nav-links a.active,.nav-links a:hover { color:var(--accent); border-bottom-color:#22b49b; }
+      main { padding-top: 104px; padding-bottom: 44px; }
+      main { flex: 1; }
+      .hero { padding: 26px 0 24px; }
+      .eyebrow {
+        display:inline-block; padding:6px 12px; border-radius:999px; background:var(--accent-soft);
+        color:var(--accent); border:1px solid #b8d8f2; font-size:13px; font-weight:600;
+      }
+      h1 { margin:14px 0 10px; font-size:clamp(32px,4.8vw,50px); line-height:1.16; }
+      .lead { margin:0; max-width:66ch; color:var(--muted); font-size:18px; }
+      .blog-grid { margin-top:22px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+      .post-card {
+        background:linear-gradient(160deg,#ffffff,#f7fbff); border:1px solid var(--line);
+        border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; display:flex; flex-direction:column; min-height:250px;
+      }
+      .post-meta { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+      .post-date { color:#6a7f94; font-size:13px; font-weight:600; }
+      .tag { padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+      .tag.web3 { background:#eaf5ff; color:#0a66a1; border:1px solid #b3d8f4; }
+      .tag.golang { background:#eafcf8; color:#0f8576; border:1px solid #a2e3d6; }
+      .tag.java { background:#f2efff; color:#614fca; border:1px solid #cfc6f9; }
+      .post-title { margin:0 0 10px; font-size:22px; line-height:1.32; }
+      .post-excerpt { margin:0; color:var(--muted); font-size:15px; flex:1; }
+      .post-link { margin-top:16px; color:var(--accent); text-decoration:none; font-weight:700; }
+      .post-link:hover { color:#0f7f71; }
+      .empty-tip {
+        margin-top:24px; padding:16px 18px; border-radius:12px; border:1px dashed #b6cee2;
+        color:#60758b; background:rgba(255,255,255,.7);
+      }
+      .loading { margin-top: 22px; color:#6a7f94; }
+      footer { padding:16px 0 24px; text-align:center; color:#5a7086; border-top:1px solid var(--line); }
+      @media (max-width: 980px) { .blog-grid { grid-template-columns:1fr; } }
+      @media (max-width: 760px) {
+        nav { min-height:66px; flex-direction:column; justify-content:center; padding:10px 0; }
+        .nav-links { width:100%; justify-content:space-between; gap:8px; font-size:14px; }
+        main { padding-top:96px; }
+        .lead { font-size:16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav-wrap">
+      <div class="container">
+        <nav>
+          <a class="brand" href="./index.html" style="text-decoration:none;color:inherit">
+            <span class="avatar">V</span>
+            <span>Viper</span>
+          </a>
+          <div class="nav-links">
+            <a href="./index.html#about">关于我</a>
+            <a href="./index.html#skills">技能</a>
+            <a href="./index.html#works">作品集</a>
+            <a href="./index.html#experience">经历</a>
+            <a href="./index.html#contact">联系</a>
+            <a class="active" href="./blog.html">博客</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="container hero">
+        <span class="eyebrow">BLOG / ENGINEERING NOTES</span>
+        <h1>技术博客</h1>
+        <p class="lead">记录我在 Web3、Golang、Java 后端架构中的实践经验，包括性能优化、稳定性治理、链上数据处理与工程化方法。</p>
+      </section>
+
+      <section class="container" id="blogListRoot">
+        <div class="loading" id="loading">正在加载文章...</div>
+        <div class="blog-grid" id="blogGrid" style="display:none"></div>
+        <div class="empty-tip" id="emptyTip" style="display:none">
+          暂无文章。你可以在 <code>posts/</code> 目录新增 <code>.md</code> 文件，博客列表会自动读取并展示。
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2026 Viper. All rights reserved.</footer>
+
+    <script src="./posts/blog-engine.js"></script>
+    <script>
+      (async () => {
+        const loading = document.getElementById('loading');
+        const grid = document.getElementById('blogGrid');
+        const empty = document.getElementById('emptyTip');
+
+        try {
+          const posts = await window.BlogEngine.loadPosts();
+          loading.style.display = 'none';
+
+          if (!posts.length) {
+            empty.style.display = 'block';
+            return;
+          }
+
+          grid.style.display = 'grid';
+          grid.innerHTML = posts
+            .map(
+              (post) => `
+              <article class="post-card">
+                <div class="post-meta">
+                  <span class="post-date">${post.date || ''}</span>
+                  <span class="tag ${window.BlogEngine.tagClass(post.tag)}">${post.tag || 'Tech'}</span>
+                </div>
+                <h2 class="post-title">${post.title}</h2>
+                <p class="post-excerpt">${post.excerpt || ''}</p>
+                <a class="post-link" href="./post.html?slug=${encodeURIComponent(post.slug)}" aria-label="阅读文章">阅读全文 →</a>
+              </article>`
+            )
+            .join('');
+        } catch (error) {
+          loading.style.display = 'none';
+          empty.style.display = 'block';
+          empty.textContent = '文章加载失败，请稍后刷新重试。';
+          console.error(error);
+        }
+      })();
+    </script>
+  </body>
+</html>

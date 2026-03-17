@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Golang 服务在高并发场景下的延迟治理 | Viper Blog</title>
+    <meta name="description" content="Golang 延迟治理：连接池、GC、热点锁与队列积压处理。" />
+    <style>
+      :root { --bg:#f3f9ff; --surface:#fff; --line:#cfe0ef; --text:#1b2f42; --muted:#4a6278; --accent:#0f8576; }
+      *{box-sizing:border-box;} body{margin:0;font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;color:var(--text);background:var(--bg);line-height:1.78;}
+      .container{width:min(900px,92vw);margin:0 auto;} .nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(243,249,255,.92);border-bottom:1px solid var(--line);backdrop-filter: blur(8px);} .nav .container{min-height:72px;display:flex;align-items:center;justify-content:space-between;}
+      a{color:var(--accent);text-decoration:none;} main{padding-top:100px;padding-bottom:36px;} .article{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 10px 22px rgba(14,154,134,.08);} h1{margin:0 0 8px;font-size:36px;line-height:1.2;} .meta{color:#6a7f94;font-size:14px;margin-bottom:20px;} h2{margin:24px 0 10px;font-size:24px;} p{margin:0 0 12px;} ul{margin:0 0 12px;padding-left:20px;} code{background:#eafcf8;border:1px solid #bfe7dd;border-radius:6px;padding:2px 6px;} .back{display:inline-block;margin-top:16px;font-weight:700;}
+    </style>
+  </head>
+  <body>
+    <header class="nav"><div class="container"><strong>Viper Blog</strong><a href="../blog.html">返回博客列表</a></div></header>
+    <main class="container">
+      <article class="article">
+        <h1>Golang 服务在高并发场景下的延迟治理</h1>
+        <div class="meta">发布于 2026-02-24 · 阅读约 8 分钟</div>
+        <p>延迟治理不是单点优化，而是从入口到存储的系统工程。这里分享我在交易 API 场景下的一套排查与优化路径。</p>
+        <h2>1. 快速定位瓶颈</h2>
+        <ul>
+          <li>先看 P95/P99 分布，再看单链路火焰图。</li>
+          <li>区分 CPU 饱和、I/O 等待、锁竞争三类问题。</li>
+          <li>把 <code>queue_wait</code> 和 <code>handler_cost</code> 分开统计。</li>
+        </ul>
+        <h2>2. 常见优化点</h2>
+        <ul>
+          <li>连接池：统一上限，避免突发下游雪崩。</li>
+          <li>对象复用：在热点路径使用池化降低 GC 压力。</li>
+          <li>锁优化：拆大锁、缩临界区、优先无锁数据结构。</li>
+        </ul>
+        <h2>3. 稳态策略</h2>
+        <p>当服务进入高峰期，优先保证核心交易接口，非核心接口降级或限速。把“可用”放在“全部功能完整”之前。</p>
+        <a class="back" href="../blog.html">← 返回博客</a>
+      </article>
+    </main>
+  </body>
+</html>

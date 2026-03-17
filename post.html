@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文章详情 | Viper Blog</title>
+    <meta name="description" content="Viper 技术博客文章详情页" />
+    <style>
+      :root {
+        --bg: #f3f9ff;
+        --surface: #ffffff;
+        --line: #cfe0ef;
+        --text: #1b2f42;
+        --muted: #4a6278;
+        --accent: #0c6cae;
+        --radius: 16px;
+        --shadow: 0 10px 22px rgba(12, 108, 174, 0.1);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 10% 12%, rgba(31, 156, 244, 0.16), transparent 38%),
+          radial-gradient(circle at 88% 78%, rgba(14, 165, 143, 0.12), transparent 35%),
+          var(--bg);
+        line-height: 1.78;
+      }
+      .container { width: min(1120px, 92vw); margin: 0 auto; }
+      .nav-wrap {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+        backdrop-filter: blur(8px);
+        background: rgba(243, 249, 255, 0.92);
+        border-bottom: 1px solid rgba(207, 224, 239, 0.9);
+      }
+      nav { min-height: 76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+      .brand { display:flex; align-items:center; gap:12px; font-size:18px; font-weight:700; text-decoration:none; color:inherit; }
+      .avatar {
+        width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#28a4f3,#1277bf);
+        display:grid; place-items:center; color:#fff; font-weight:800; box-shadow:0 6px 18px rgba(18,119,191,.24);
+      }
+      .nav-right a { text-decoration:none; color:#4b657b; font-weight:600; margin-left:16px; }
+      .nav-right a:hover { color:var(--accent); }
+      main { padding-top: 104px; padding-bottom: 36px; }
+      .layout { display:grid; grid-template-columns: minmax(0,1fr) 280px; gap:20px; }
+      .article {
+        background: linear-gradient(160deg, #fff, #f7fbff);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 28px;
+      }
+      .crumb { color:#60768b; font-size:14px; margin-bottom:8px; }
+      h1 { margin:0 0 8px; font-size: clamp(30px, 4vw, 42px); line-height:1.22; }
+      .meta { color:#6a7f94; font-size:14px; margin-bottom:18px; }
+      .content h2 { margin:26px 0 10px; font-size:26px; }
+      .content h3 { margin:20px 0 8px; font-size:20px; }
+      .content p { margin:0 0 12px; color:#2f455b; }
+      .content ul { margin:0 0 12px; padding-left:20px; }
+      .content li { margin:0 0 6px; }
+      .content code { background:#edf6ff; border:1px solid #cfe0ef; border-radius:6px; padding:2px 6px; }
+      .content pre { background:#0f2030; color:#e9f4ff; border-radius:10px; padding:14px; overflow:auto; }
+      .content pre code { background: transparent; border: 0; color: inherit; padding:0; }
+      .content a { color: var(--accent); }
+      .toc {
+        position: sticky;
+        top: 96px;
+        align-self: start;
+        background: linear-gradient(160deg, #fff, #f7fbff);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 8px 18px rgba(12, 108, 174, 0.08);
+        padding: 16px;
+      }
+      .toc h3 { margin:0 0 10px; font-size:16px; }
+      .toc ul { margin:0; padding:0; list-style:none; display:grid; gap:8px; }
+      .toc a { text-decoration:none; color:#4a647a; font-size:14px; }
+      .toc a:hover { color:var(--accent); }
+      .toc .h3 { padding-left:12px; font-size:13px; color:#60788f; }
+      .pager {
+        margin-top: 24px;
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap:12px;
+      }
+      .pager a {
+        text-decoration:none;
+        border:1px solid var(--line);
+        border-radius: 12px;
+        background:#fff;
+        padding: 12px;
+        color:#355067;
+      }
+      .pager a:hover { border-color:#a9d3ef; color:var(--accent); }
+      footer { padding:16px 0 24px; text-align:center; color:#5a7086; border-top:1px solid var(--line); }
+      @media (max-width: 980px) {
+        .layout { grid-template-columns: 1fr; }
+        .toc { position: static; }
+      }
+      @media (max-width: 760px) {
+        nav { min-height:66px; flex-direction:column; justify-content:center; padding:10px 0; }
+        main { padding-top: 96px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav-wrap">
+      <div class="container">
+        <nav>
+          <a class="brand" href="./index.html"><span class="avatar">V</span><span>Viper</span></a>
+          <div class="nav-right">
+            <a href="./blog.html">博客首页</a>
+            <a href="./index.html">返回主页</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="layout">
+        <article class="article">
+          <div class="crumb" id="crumb">加载中...</div>
+          <h1 id="title">加载中...</h1>
+          <div class="meta" id="meta"></div>
+          <section class="content" id="content"></section>
+          <div class="pager" id="pager"></div>
+        </article>
+
+        <aside class="toc">
+          <h3>目录</h3>
+          <ul id="tocList"></ul>
+        </aside>
+      </div>
+    </main>
+
+    <footer>© 2026 Viper. All rights reserved.</footer>
+
+    <script src="./posts/blog-engine.js"></script>
+    <script>
+      (async () => {
+        const params = new URLSearchParams(location.search);
+        const slug = params.get('slug') || '';
+
+        const titleEl = document.getElementById('title');
+        const metaEl = document.getElementById('meta');
+        const contentEl = document.getElementById('content');
+        const crumbEl = document.getElementById('crumb');
+        const tocList = document.getElementById('tocList');
+        const pagerEl = document.getElementById('pager');
+
+        try {
+          const { posts, current } = await window.BlogEngine.findPostBySlug(slug);
+          if (!current) {
+            titleEl.textContent = '暂无文章';
+            crumbEl.textContent = 'Blog';
+            return;
+          }
+
+          document.title = `${current.title} | Viper Blog`;
+          titleEl.textContent = current.title;
+          metaEl.textContent = `${current.date || ''} · ${current.tag || 'Tech'} · 阅读约 8 分钟`;
+          crumbEl.textContent = `${current.tag || 'Tech'} / Engineering`;
+
+          contentEl.innerHTML = window.BlogEngine.renderMarkdown(current.content);
+
+          const toc = window.BlogEngine.buildTocAndAnchor(contentEl);
+          tocList.innerHTML = toc
+            .map((item) => `<li><a class="${item.level}" href="#${item.id}">${item.text}</a></li>`)
+            .join('');
+
+          const idx = posts.findIndex((p) => p.slug === current.slug);
+          const prev = idx >= 0 ? posts[idx + 1] : null;
+          const next = idx > 0 ? posts[idx - 1] : null;
+
+          pagerEl.innerHTML = [
+            prev
+              ? `<a href="./post.html?slug=${encodeURIComponent(prev.slug)}">← 上一篇<br /><strong>${prev.title}</strong></a>`
+              : '<div></div>',
+            next
+              ? `<a href="./post.html?slug=${encodeURIComponent(next.slug)}" style="text-align:right">下一篇 →<br /><strong>${next.title}</strong></a>`
+              : '<div></div>'
+          ].join('');
+        } catch (error) {
+          titleEl.textContent = '文章加载失败';
+          crumbEl.textContent = 'Blog';
+          metaEl.textContent = '请刷新后重试';
+          contentEl.innerHTML = '<p>加载异常，请稍后再试。</p>';
+          console.error(error);
+        }
+      })();
+    </script>
+  </body>
+</html>
