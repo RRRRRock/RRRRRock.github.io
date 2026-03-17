@@ -4,7 +4,8 @@
   "description": "Personal resume single-page site with obfuscated build output",
   "main": "index.html",
   "scripts": {
-    "build:obf": "node scripts/build-obfuscated.mjs"
+    "build:posts": "node scripts/generate-posts-manifest.mjs",
+    "build:obf": "npm run build:posts && node scripts/build-obfuscated.mjs"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,11 @@
     "clean-css": "^5.3.3",
     "html-minifier-terser": "^7.2.0",
     "javascript-obfuscator": "^5.3.0",
+    "playwright": "^1.58.2",
     "terser": "^5.46.0"
+  },
+  "dependencies": {
+    "dompurify": "^3.3.3",
+    "marked": "^17.0.4"
   }
 }

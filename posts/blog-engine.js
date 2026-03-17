@@ -1,14 +1,5 @@
 (function () {
-  const OWNER = 'ViperHua';
-  const REPO = 'RRRRRock.github.io';
-  const POSTS_DIR = 'posts';
-  const BRANCH = 'main';
-
-  const FALLBACK_FILES = [
-    './posts/multi-chain-indexing.md',
-    './posts/golang-latency-tuning.md',
-    './posts/java-idempotency-consistency.md'
-  ];
+  const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 
   function parseFrontMatter(markdown) {
     const match = markdown.match(/^---\n([\s\S]*?)\n---\n?/);
@@ -29,23 +20,6 @@
     };
   }
 
-  function simpleExcerpt(content) {
-    const text = content
-      .replace(/```[\s\S]*?```/g, ' ')
-      .replace(/`[^`]*`/g, ' ')
-      .replace(/^#{1,6}\s+/gm, '')
-      .replace(/\[(.*?)\]\(.*?\)/g, '$1')
-      .replace(/[>*_~\-]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    return text.slice(0, 88) + (text.length > 88 ? '...' : '');
-  }
-
-  function filenameToSlug(path) {
-    const name = path.split('/').pop() || '';
-    return name.replace(/\.md$/i, '');
-  }
-
   function tagClass(tag) {
     const t = (tag || '').toLowerCase();
     if (t.includes('web3')) return 'web3';
@@ -54,59 +28,60 @@
     return 'web3';
   }
 
-  async function listMarkdownFiles() {
-    const api = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_DIR}?ref=${BRANCH}`;
-    const resp = await fetch(api, { headers: { Accept: 'application/vnd.github+json' } });
-    if (!resp.ok) throw new Error(`List posts failed: ${resp.status}`);
-    const items = await resp.json();
-    return items
-      .filter((item) => item.type === 'file' && /\.md$/i.test(item.name))
-      .map((item) => ({ path: item.path, download_url: item.download_url }));
-  }
+  async function loadManifest() {
+    if (Array.isArray(window.__POSTS_MANIFEST__) && window.__POSTS_MANIFEST__.length) {
+      return window.__POSTS_MANIFEST__;
+    }
 
-  async function loadMarkdown(pathOrUrl) {
-    const resp = await fetch(pathOrUrl, { cache: 'no-store' });
-    if (!resp.ok) throw new Error(`Load markdown failed: ${resp.status}`);
-    return resp.text();
+    const code = await fetchTextCached('./posts/posts-manifest.js', CACHE_TTL_MS);
+    // eslint-disable-next-line no-new-func
+    new Function(code)();
+
+    if (!Array.isArray(window.__POSTS_MANIFEST__)) {
+      throw new Error('Manifest parse failed');
+    }
+    return window.__POSTS_MANIFEST__;
   }
 
   async function loadPosts() {
-    let files = [];
-    try {
-      files = await listMarkdownFiles();
-    } catch (err) {
-      files = FALLBACK_FILES.map((f) => ({ path: f, download_url: f }));
-    }
-
-    const posts = [];
-    for (const file of files) {
-      const md = await loadMarkdown(file.download_url || file.path);
-      const { meta, content } = parseFrontMatter(md);
-      const slug = meta.slug || filenameToSlug(file.path);
-      posts.push({
-        slug,
-        title: meta.title || slug,
-        date: meta.date || '',
-        tag: meta.tag || 'Tech',
-        excerpt: meta.excerpt || simpleExcerpt(content),
-        content
-      });
-    }
-
-    posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-    return posts;
+    const posts = await loadManifest();
+    return [...posts].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   }
 
   async function findPostBySlug(slug) {
     const posts = await loadPosts();
+    const currentMeta = posts.find((p) => p.slug === slug) || posts[0] || null;
+    if (!currentMeta) return { posts, current: null };
+
+    const md = await fetchTextCached(currentMeta.file, CACHE_TTL_MS);
+    const { meta, content } = parseFrontMatter(md);
+
     return {
       posts,
-      current: posts.find((p) => p.slug === slug) || posts[0] || null
+      current: {
+        ...currentMeta,
+        ...meta,
+        content
+      }
     };
   }
 
   function renderMarkdown(md) {
-    // Basic markdown renderer for headings/paragraph/list/code without external deps.
+    if (window.marked && typeof window.marked.parse === 'function') {
+      window.marked.setOptions({
+        gfm: true,
+        breaks: true
+      });
+
+      const rawHtml = window.marked.parse(md || '');
+      if (window.DOMPurify && typeof window.DOMPurify.sanitize === 'function') {
+        return window.DOMPurify.sanitize(rawHtml, {
+          USE_PROFILES: { html: true }
+        });
+      }
+      return rawHtml;
+    }
+
     const lines = md.replace(/\r\n/g, '\n').split('\n');
     let html = '';
     let inCode = false;
@@ -117,6 +92,7 @@
 
     const inline = (s) =>
       esc(s)
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" decoding="async" />')
         .replace(/`([^`]+)`/g, '<code>$1</code>')
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
@@ -198,12 +174,63 @@
     return toc;
   }
 
+  function cacheKey(url) {
+    return `blog_cache:${url}`;
+  }
+
+  function getCached(url, ttl) {
+    try {
+      const raw = localStorage.getItem(cacheKey(url));
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object') return null;
+      if (!parsed.time || !parsed.text) return null;
+      if (Date.now() - parsed.time > ttl) return null;
+      return parsed.text;
+    } catch (_err) {
+      return null;
+    }
+  }
+
+  function setCached(url, text) {
+    try {
+      localStorage.setItem(cacheKey(url), JSON.stringify({ time: Date.now(), text }));
+    } catch (_err) {
+      // Ignore storage failures (private mode / quota exceeded).
+    }
+  }
+
+  async function fetchTextCached(url, ttl) {
+    const hit = getCached(url, ttl);
+    if (hit) return hit;
+    const resp = await fetch(url, { cache: 'force-cache' });
+    if (!resp.ok) throw new Error(`Fetch failed: ${resp.status} (${url})`);
+    const text = await resp.text();
+    setCached(url, text);
+    return text;
+  }
+
+  async function warmupPostCache(limit) {
+    try {
+      const posts = await loadPosts();
+      const count = Math.max(0, Math.min(posts.length, typeof limit === 'number' ? limit : 3));
+      await Promise.all(
+        posts.slice(0, count).map(async (p) => {
+          await fetchTextCached(p.file, CACHE_TTL_MS);
+        })
+      );
+    } catch (_err) {
+      // warmup is best-effort only
+    }
+  }
+
   window.BlogEngine = {
     loadPosts,
     findPostBySlug,
     parseFrontMatter,
     renderMarkdown,
     buildTocAndAnchor,
-    tagClass
+    tagClass,
+    warmupPostCache
   };
 })();

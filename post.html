@@ -59,10 +59,63 @@
       .content h3 { margin:20px 0 8px; font-size:20px; }
       .content p { margin:0 0 12px; color:#2f455b; }
       .content ul { margin:0 0 12px; padding-left:20px; }
+      .content ol { margin:0 0 12px; padding-left:24px; }
       .content li { margin:0 0 6px; }
+      .content blockquote {
+        margin: 0 0 14px;
+        padding: 10px 14px;
+        border-left: 4px solid #8ec2e7;
+        background: #eef7ff;
+        color: #355067;
+        border-radius: 8px;
+      }
+      .content hr {
+        border: 0;
+        border-top: 1px solid #cfe0ef;
+        margin: 18px 0;
+      }
       .content code { background:#edf6ff; border:1px solid #cfe0ef; border-radius:6px; padding:2px 6px; }
-      .content pre { background:#0f2030; color:#e9f4ff; border-radius:10px; padding:14px; overflow:auto; }
+      .content img {
+        display: block;
+        width: min(100%, 980px);
+        height: auto;
+        border-radius: 12px;
+        border: 1px solid #cfe0ef;
+        box-shadow: 0 8px 18px rgba(12, 108, 174, 0.08);
+        margin: 10px auto 16px;
+      }
+      .content pre {
+        background:#0f2030;
+        color:#e9f4ff;
+        border-radius:10px;
+        padding:14px;
+        overflow:auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
       .content pre code { background: transparent; border: 0; color: inherit; padding:0; }
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 0 14px;
+        background: #fff;
+        border: 1px solid #cfe0ef;
+        border-radius: 10px;
+        overflow: hidden;
+        display: block;
+        overflow-x: auto;
+      }
+      .content th,
+      .content td {
+        border: 1px solid #d7e6f3;
+        padding: 8px 10px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .content th {
+        background: #eef7ff;
+        color: #28435a;
+      }
       .content a { color: var(--accent); }
       .toc {
         position: sticky;
@@ -73,6 +126,10 @@
         border-radius: 14px;
         box-shadow: 0 8px 18px rgba(12, 108, 174, 0.08);
         padding: 16px;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
       }
       .toc h3 { margin:0 0 10px; font-size:16px; }
       .toc ul { margin:0; padding:0; list-style:none; display:grid; gap:8px; }
@@ -97,7 +154,10 @@
       footer { padding:16px 0 24px; text-align:center; color:#5a7086; border-top:1px solid var(--line); }
       @media (max-width: 980px) {
         .layout { grid-template-columns: 1fr; }
-        .toc { position: static; }
+        .toc {
+          position: static;
+          max-height: 42vh;
+        }
       }
       @media (max-width: 760px) {
         nav { min-height:66px; flex-direction:column; justify-content:center; padding:10px 0; }
@@ -137,6 +197,9 @@
 
     <footer>© 2026 Viper. All rights reserved.</footer>
 
+    <script src="./assets/vendor/marked.umd.js"></script>
+    <script src="./assets/vendor/purify.min.js"></script>
+    <script src="./posts/posts-manifest.js"></script>
     <script src="./posts/blog-engine.js"></script>
     <script>
       (async () => {

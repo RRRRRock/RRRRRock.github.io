@@ -124,6 +124,7 @@
 
     <footer>© 2026 Viper. All rights reserved.</footer>
 
+    <script src="./posts/posts-manifest.js"></script>
     <script src="./posts/blog-engine.js"></script>
     <script>
       (async () => {
@@ -155,6 +156,9 @@
               </article>`
             )
             .join('');
+
+          // Warm cache for latest posts to speed up detail-page navigation.
+          window.BlogEngine.warmupPostCache(4);
         } catch (error) {
           loading.style.display = 'none';
           empty.style.display = 'block';
