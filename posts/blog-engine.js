@@ -1,5 +1,6 @@
 (function () {
   const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+  const CACHE_VERSION = 'v2';
 
   function parseFrontMatter(markdown) {
     const match = markdown.match(/^---\n([\s\S]*?)\n---\n?/);
@@ -175,7 +176,7 @@
   }
 
   function cacheKey(url) {
-    return `blog_cache:${url}`;
+    return `blog_cache:${CACHE_VERSION}:${url}`;
   }
 
   function getCached(url, ttl) {
